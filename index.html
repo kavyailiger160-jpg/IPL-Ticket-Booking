@@ -1,0 +1,674 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPL 2026 - Ticket Booking</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: #f4f6fb;
+            color: #222;
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        nav {
+            background: #071b49;
+            color: white;
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav h2 {
+            color: #ffcc00;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: #ffcc00;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(120deg, #071b49, #174a91);
+            color: white;
+            text-align: center;
+            padding: 100px 20px;
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 25px;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #ffcc00;
+            color: #071b49;
+            padding: 12px 25px;
+            margin: 8px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #ffaa00;
+        }
+
+        /* General Sections */
+        section {
+            padding: 60px 7%;
+        }
+
+        section h2 {
+            color: #071b49;
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 30px;
+        }
+
+        /* About */
+        .about {
+            background: white;
+        }
+
+        .about h3 {
+            color: #174a91;
+            margin: 20px 0 10px;
+        }
+
+        .about ul {
+            padding-left: 30px;
+        }
+
+        /* Match Schedule */
+        .filter {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        select, input {
+            padding: 11px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+        }
+
+        .filter select {
+            width: 220px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            min-width: 750px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 13px;
+            text-align: center;
+        }
+
+        th {
+            background: #071b49;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background: #f0f3fa;
+        }
+
+        .book-btn {
+            background: #ffcc00;
+            color: #071b49;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* Booking */
+        .booking {
+            background: white;
+        }
+
+        .booking-layout {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            align-items: start;
+        }
+
+        .booking-form, .summary {
+            background: #f4f6fb;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 3px 12px #ddd;
+        }
+
+        .booking-form label {
+            display: block;
+            margin: 12px 0 5px;
+            font-weight: bold;
+        }
+
+        .booking-form button {
+            width: 100%;
+            margin: 20px 0 0;
+        }
+
+        .summary h3 {
+            color: #071b49;
+            margin-bottom: 15px;
+        }
+
+        .summary p {
+            margin: 12px 0;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 8px;
+        }
+
+        .total {
+            color: #e67e00;
+            font-size: 23px;
+            font-weight: bold;
+        }
+
+        /* Guidelines */
+        .guidelines {
+            background: #f4f6fb;
+        }
+
+        .guideline-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px #ddd;
+            text-align: center;
+        }
+
+        .card h3 {
+            color: #174a91;
+            margin-bottom: 12px;
+        }
+
+        /* Footer */
+        footer {
+            background: #071b49;
+            color: white;
+            text-align: center;
+            padding: 25px;
+        }
+
+        @media(max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 12px;
+            }
+
+            .hero h1 {
+                font-size: 30px;
+            }
+
+            .booking-layout,
+            .guideline-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <h2>IPL 2026</h2>
+        <ul>
+            <li><a href="#matches">Matches</a></li>
+            <li><a href="#booking">Book Ticket</a></li>
+            <li><a href="#mybookings">My Bookings</a></li>
+            <li><a href="#guidelines">Guidelines</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <h1>Experience The Stadium Energy Live!</h1>
+        <p>Watch your favourite IPL teams battle for glory.</p>
+
+        <a href="#matches" class="btn">View Schedule</a>
+        <a href="#booking" class="btn">Book Ticket</a>
+    </div>
+
+    <!-- About IPL -->
+    <section class="about" id="about">
+        <h2>About IPL 2026</h2>
+
+        <p>
+            The Indian Premier League (IPL) is an exciting T20 cricket
+            tournament featuring popular cricket teams and players.
+            Experience the thrill of live cricket and support your
+            favourite team!
+        </p>
+
+        <h3>Popular Teams</h3>
+        <ul>
+            <li>Chennai Super Kings (CSK)</li>
+            <li>Mumbai Indians (MI)</li>
+            <li>Royal Challengers Bengaluru (RCB)</li>
+            <li>Kolkata Knight Riders (KKR)</li>
+            <li>Sunrisers Hyderabad (SRH)</li>
+            <li>Rajasthan Royals (RR)</li>
+            <li>Delhi Capitals (DC)</li>
+            <li>Punjab Kings (PBKS)</li>
+            <li>Gujarat Titans (GT)</li>
+            <li>Lucknow Super Giants (LSG)</li>
+        </ul>
+
+        <h3>Major Match Venues</h3>
+        <ul>
+            <li>M. A. Chidambaram Stadium, Chennai</li>
+            <li>Wankhede Stadium, Mumbai</li>
+            <li>M. Chinnaswamy Stadium, Bengaluru</li>
+            <li>Eden Gardens, Kolkata</li>
+            <li>Rajiv Gandhi International Stadium, Hyderabad</li>
+        </ul>
+    </section>
+
+    <!-- Match Schedule -->
+    <section id="matches">
+        <h2>IPL Match Schedule</h2>
+
+        <div class="filter">
+            <label for="teamFilter"><b>Filter by Team: </b></label>
+
+            <select id="teamFilter" onchange="filterMatches()">
+                <option value="all">All Teams</option>
+                <option value="CSK">Chennai Super Kings</option>
+                <option value="MI">Mumbai Indians</option>
+                <option value="RCB">Royal Challengers Bengaluru</option>
+                <option value="KKR">Kolkata Knight Riders</option>
+                <option value="SRH">Sunrisers Hyderabad</option>
+            </select>
+        </div>
+
+        <div class="table-container">
+            <table id="matchTable">
+                <thead>
+                    <tr>
+                        <th>Match Number</th>
+                        <th>Teams</th>
+                        <th>Date & Time</th>
+                        <th>Venue</th>
+                        <th>General</th>
+                        <th>Premium</th>
+                        <th>VIP</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr data-teams="CSK MI">
+                        <td>1</td>
+                        <td>CSK vs MI</td>
+                        <td>10 April 2026, 7:30 PM</td>
+                        <td>Chennai</td>
+                        <td>₹800</td>
+                        <td>₹2000</td>
+                        <td>₹5000</td>
+                        <td><button class="book-btn" onclick="selectMatch('CSK vs MI', 800, 2000, 5000)">Book</button></td>
+                    </tr>
+
+                    <tr data-teams="RCB KKR">
+                        <td>2</td>
+                        <td>RCB vs KKR</td>
+                        <td>12 April 2026, 7:30 PM</td>
+                        <td>Bengaluru</td>
+                        <td>₹900</td>
+                        <td>₹2200</td>
+                        <td>₹5500</td>
+                        <td><button class="book-btn" onclick="selectMatch('RCB vs KKR', 900, 2200, 5500)">Book</button></td>
+                    </tr>
+
+                    <tr data-teams="MI SRH">
+                        <td>3</td>
+                        <td>MI vs SRH</td>
+                        <td>15 April 2026, 7:30 PM</td>
+                        <td>Mumbai</td>
+                        <td>₹850</td>
+                        <td>₹2100</td>
+                        <td>₹5000</td>
+                        <td><button class="book-btn" onclick="selectMatch('MI vs SRH', 850, 2100, 5000)">Book</button></td>
+                    </tr>
+
+                    <tr data-teams="CSK RCB">
+                        <td>4</td>
+                        <td>CSK vs RCB</td>
+                        <td>18 April 2026, 7:30 PM</td>
+                        <td>Chennai</td>
+                        <td>₹1000</td>
+                        <td>₹2500</td>
+                        <td>₹6000</td>
+                        <td><button class="book-btn" onclick="selectMatch('CSK vs RCB', 1000, 2500, 6000)">Book</button></td>
+                    </tr>
+
+                    <tr data-teams="KKR SRH">
+                        <td>5</td>
+                        <td>KKR vs SRH</td>
+                        <td>20 April 2026, 7:30 PM</td>
+                        <td>Kolkata</td>
+                        <td>₹750</td>
+                        <td>₹1800</td>
+                        <td>₹4500</td>
+                        <td><button class="book-btn" onclick="selectMatch('KKR vs SRH', 750, 1800, 4500)">Book</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Ticket Booking -->
+    <section class="booking" id="booking">
+        <h2>Book Your IPL Tickets</h2>
+
+        <div class="booking-layout">
+
+            <form class="booking-form" id="bookingForm">
+
+                <label for="match">Select Match</label>
+                <select id="match" required>
+                    <option value="">Choose Match</option>
+                    <option value="CSK vs MI">CSK vs MI</option>
+                    <option value="RCB vs KKR">RCB vs KKR</option>
+                    <option value="MI vs SRH">MI vs SRH</option>
+                    <option value="CSK vs RCB">CSK vs RCB</option>
+                    <option value="KKR vs SRH">KKR vs SRH</option>
+                </select>
+
+                <label for="stand">Stand Category</label>
+                <select id="stand" required>
+                    <option value="General">General</option>
+                    <option value="Premium">Premium</option>
+                    <option value="VIP">VIP</option>
+                </select>
+
+                <label for="quantity">Number of Tickets</label>
+                <input type="number" id="quantity" min="1" max="10" value="1" required>
+
+                <label for="name">Full Name</label>
+                <input type="text" id="name" placeholder="Enter your name" required>
+
+                <label for="email">Email Address</label>
+                <input type="email" id="email" placeholder="Enter your email" required>
+
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" placeholder="Enter 10-digit phone number"
+                       pattern="[0-9]{10}" maxlength="10" required>
+
+                <button type="submit" class="btn">Confirm Booking</button>
+            </form>
+
+            <!-- Booking Summary -->
+            <div class="summary">
+                <h3>Booking Summary</h3>
+
+                <p>Match: <b id="summaryMatch">Not Selected</b></p>
+                <p>Stand: <b id="summaryStand">General</b></p>
+                <p>Ticket Price: ₹<b id="summaryPrice">800</b></p>
+                <p>Quantity: <b id="summaryQuantity">1</b></p>
+
+                <p class="total">
+                    Total: ₹<span id="totalAmount">800</span>
+                </p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- My Bookings -->
+    <section id="mybookings">
+        <h2>My Ticket Bookings</h2>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Booking ID</th>
+                        <th>Name</th>
+                        <th>Match</th>
+                        <th>Stand</th>
+                        <th>Tickets</th>
+                        <th>Total Amount</th>
+                    </tr>
+                </thead>
+
+                <tbody id="bookingRecords">
+                    <tr id="emptyMessage">
+                        <td colspan="6">No bookings available yet.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Guidelines -->
+    <section class="guidelines" id="guidelines">
+        <h2>Stadium Guidelines</h2>
+
+        <div class="guideline-container">
+
+            <div class="card">
+                <h3>Ticket Verification</h3>
+                <p>
+                    Carry your valid ticket and QR code.
+                    Tickets will be checked at the stadium entrance.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>ID Proof Requirement</h3>
+                <p>
+                    Carry a valid government-issued identity card
+                    for verification during entry.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>Prohibited Items</h3>
+                <p>
+                    Weapons, outside food, alcohol, fireworks
+                    and other restricted items are not allowed.
+                </p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2026 IPL Ticket Booking Website. All Rights Reserved.</p>
+        <p>Designed for Educational Purposes.</p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+
+        // Ticket prices for each match
+        const prices = {
+            "CSK vs MI": {General: 800, Premium: 2000, VIP: 5000},
+            "RCB vs KKR": {General: 900, Premium: 2200, VIP: 5500},
+            "MI vs SRH": {General: 850, Premium: 2100, VIP: 5000},
+            "CSK vs RCB": {General: 1000, Premium: 2500, VIP: 6000},
+            "KKR vs SRH": {General: 750, Premium: 1800, VIP: 4500}
+        };
+
+        // Filter matches by team
+        function filterMatches() {
+            const selectedTeam = document.getElementById("teamFilter").value;
+            const rows = document.querySelectorAll("#matchTable tbody tr");
+
+            rows.forEach(row => {
+                const teams = row.dataset.teams;
+
+                if (selectedTeam === "all" || teams.includes(selectedTeam)) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        }
+
+        // Select match from schedule
+        function selectMatch(match, general, premium, vip) {
+            document.getElementById("match").value = match;
+            updateSummary();
+
+            document.getElementById("booking").scrollIntoView({
+                behavior: "smooth"
+            });
+        }
+
+        // Update booking summary
+        function updateSummary() {
+            const match = document.getElementById("match").value;
+            const stand = document.getElementById("stand").value;
+            const quantity = Number(document.getElementById("quantity").value) || 1;
+
+            const price = match ? prices[match][stand] : 0;
+            const total = price * quantity;
+
+            document.getElementById("summaryMatch").textContent =
+                match || "Not Selected";
+
+            document.getElementById("summaryStand").textContent = stand;
+            document.getElementById("summaryPrice").textContent = price;
+            document.getElementById("summaryQuantity").textContent = quantity;
+            document.getElementById("totalAmount").textContent = total;
+        }
+
+        // Listen for changes in the form
+        document.getElementById("match").addEventListener("change", updateSummary);
+        document.getElementById("stand").addEventListener("change", updateSummary);
+        document.getElementById("quantity").addEventListener("input", updateSummary);
+
+        // Confirm ticket booking
+        document.getElementById("bookingForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const phone = document.getElementById("phone").value;
+            const match = document.getElementById("match").value;
+            const stand = document.getElementById("stand").value;
+            const quantity = Number(document.getElementById("quantity").value);
+
+            if (!prices[match]) {
+                alert("Please select a match.");
+                return;
+            }
+
+            if (!/^[0-9]{10}$/.test(phone)) {
+                alert("Please enter a valid 10-digit phone number.");
+                return;
+            }
+
+            const price = prices[match][stand];
+            const total = price * quantity;
+
+            // Remove empty message
+            const emptyMessage = document.getElementById("emptyMessage");
+            if (emptyMessage) {
+                emptyMessage.remove();
+            }
+
+            // Create booking record
+            const table = document.getElementById("bookingRecords");
+            const row = table.insertRow();
+
+            const bookingId = "IPL" + Date.now().toString().slice(-6);
+
+            row.innerHTML = `
+                <td>${bookingId}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>${quantity}</td>
+                <td>₹${total}</td>
+            `;
+
+            row.cells[1].textContent = name;
+            row.cells[2].textContent = match;
+            row.cells[3].textContent = stand;
+
+            alert("Booking successful! Your Booking ID is " + bookingId);
+
+            // Reset form
+            document.getElementById("bookingForm").reset();
+            updateSummary();
+
+            // Show booking records
+            document.getElementById("mybookings").scrollIntoView({
+                behavior: "smooth"
+            });
+        });
+
+        // Initial summary
+        updateSummary();
+
+    </script>
+
+</body>
+</html>
